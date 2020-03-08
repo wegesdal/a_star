@@ -55,18 +55,18 @@ def retrace(node):
     return [(p.x, p.y) for p in path]
 
 def astar(start, end, grid):
-    open_list = set()
-    closed_list = set()
-    open_list.add(start)
+    open_set = set()
+    closed_set = set()
+    open_set.add(start)
 
-    while open_list:
+    while open_set:
         # c is the node in openset with the minimum F value
-        c = min(open_list, key=lambda o:o.G + o.H)
+        c = min(open_set, key=lambda o:o.G + o.H)
         if c.x == end.x and c.y == end.y:
             path = retrace(c)
             return path
-        open_list.remove(c)
-        closed_list.add(c)
+        open_set.remove(c)
+        closed_set.add(c)
         neighbors = [Node(c.x + 1, c.y), 
                      Node(c.x - 1, c.y + 1), 
                      Node(c.x, c.y + 1), 
@@ -77,8 +77,8 @@ def astar(start, end, grid):
                              Node(c.x - 1, c.y + 1),
                              Node(c.x - 1, c.y - 1)])
         for n in neighbors:
-            if not n in closed_list and walkable(n):
-                if n in open_list:
+            if not n in closed_set and walkable(n):
+                if n in open_set:
                     new_G = c.G + 1
                     if n.G > new_G:
                         n.G = new_G
@@ -90,7 +90,7 @@ def astar(start, end, grid):
                     else:
                         n.H = manhattan_distance(n, end)
                     n.parent = c
-                    open_list.add(n)
+                    open_set.add(n)
     print('No path found.')
 
 # prints the whole path
